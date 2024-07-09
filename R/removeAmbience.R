@@ -109,7 +109,9 @@ NULL
 
 #' @importFrom methods is
 #' @importFrom stats pnbinom qnbinom
+#' @importClassesFrom Matrix CsparseMatrix
 #' @importFrom edgeR q2qnbinom
+#' @importClassesFrom SparseArray SparseArray
 #' @importFrom DelayedArray makeNindexFromArrayViewport write_block currentViewport
 .remap_quantiles <- function(block, matches, old.means, new.means, size.factors, group.sf, dispersion, sink) {
     vp <- currentViewport()
@@ -139,8 +141,10 @@ NULL
     if (!is.null(sink)) {
         write_block(sink, vp, q)
         NULL
-    } else if (is(block, "SparseArraySeed")) {
-        as(q, "CsparseMatrix")
+    } else if (is(block, "SparseArray")) {  # that's if we don't want to return
+        as(q, "CsparseMatrix")              # any SparseArray derivatives at
+                                            # all, even though SVT_SparseArray
+                                            # objects would probably be fine
     } else {
         q 
     }

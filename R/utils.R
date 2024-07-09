@@ -11,21 +11,19 @@
     as.integer(round(colSums(m)))
 }
 
-#' @importFrom DelayedArray DelayedArray SparseArraySeed which seed
-#' @importFrom beachmat whichNonZero
-#' @importClassesFrom DelayedArray DelayedArray SparseArraySeed
+#' @importClassesFrom SparseArray COO_SparseArray
+#' @importFrom DelayedArray setAutoBPPARAM DelayedArray
+#' @importClassesFrom DelayedArray DelayedArray
 .realize_DA_to_memory <- function(m, BPPARAM) {
     if (is(m, "DelayedArray")) {
-        if (!is(seed(m), "SparseArraySeed")) {
-            idx <- whichNonZero(m, BPPARAM)
-            m <- DelayedArray(
-                SparseArraySeed(
-                    nzindex=cbind(idx$i, idx$j), 
-                    nzdata=idx$x,
-                    dim=dim(m),
-                    dimnames=dimnames(m)
-                )
-            )
+        if (!is(m@seed, "COO_SparseArray")) {
+            # Coercion from DelayedArray to COO_SparseArray uses block
+            # processing.
+            old <- .parallelize(BPPARAM)
+            on.exit(setAutoBPPARAM(old))
+            new_seed <- as(m, "COO_SparseArray")
+
+            m <- DelayedArray(new_seed)
         }
     }
 
