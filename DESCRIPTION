@@ -21,7 +21,7 @@ Imports:
     GenomicRanges,
     SummarizedExperiment,
     BiocParallel,
-    SparseArray (>= 1.5.19),
+    SparseArray (>= 1.5.18),
     DelayedArray (>= 0.31.7),
     DelayedMatrixStats,
     HDF5Array,
