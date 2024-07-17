@@ -22,7 +22,7 @@ Imports:
     SummarizedExperiment,
     BiocParallel,
     SparseArray (>= 1.5.18),
-    DelayedArray (>= 0.31.7),
+    DelayedArray (>= 0.31.9),
     DelayedMatrixStats,
     HDF5Array,
     rhdf5,
