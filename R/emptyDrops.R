@@ -311,16 +311,16 @@ testEmptyDrops <- function(m, lower=100, niters=10000, test.ambient=FALSE, ignor
     list(seeds=seeds.per.core, streams=streams.per.core)
 }
 
-#' @importFrom beachmat whichNonZero
+#' @importFrom SparseArray nzwhich nzvals
 .compute_multinom_prob_data <- function(block, prop, alpha=Inf, BPPARAM=SerialParam())
 # Efficiently calculates the data-dependent component of the log-multinomial probability
 # for a column-wise chunk of the full matrix (or, indeed, the full matrix itself).
 # Also does so for the Dirichlet-multinomial log-probability for a given 'alpha'.
 {
-    nonzero <- whichNonZero(block)
-    i <- nonzero$i
-    j <- nonzero$j
-    x <- nonzero$x
+    idx <- nzwhich(block, arr.ind=TRUE)
+    i <- idx[,1]
+    j <- idx[,2]
+    x <- nzvals(block)
 
     if (is.infinite(alpha)) {
         p.n0 <- x * log(prop[i]) - lfactorial(x)
@@ -346,14 +346,13 @@ testEmptyDrops <- function(m, lower=100, niters=10000, test.ambient=FALSE, ignor
     }
 }
 
-#' @importFrom beachmat whichNonZero
+#' @importFrom SparseArray nzwhich nzvals
 #' @importFrom stats optimize 
 .estimate_alpha <- function(mat, prop, totals, interval=c(0.01, 10000))
 # Efficiently finds the MLE for the overdispersion parameter of a Dirichlet-multinomial distribution.
 {
-    nonzero <- whichNonZero(mat)
-    i <- nonzero$i
-    x <- nonzero$x
+    i <- nzwhich(mat, arr.ind=TRUE)[,1]
+    x <- nzvals(mat)
 
     per.prop <- prop[i] 
     LOGLIK <- function(alpha) {
