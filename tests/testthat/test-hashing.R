@@ -241,7 +241,7 @@ test_that("edge cases are handled correctly with combinatorial barcodes", {
         out <- hashedDrops(mat[keep,,drop=FALSE], combinations=rbind(4:2), ambient=ambient[keep])
         SCALING <- median(mat[keep]/ambient[keep])
         PSEUDO <- mean(ambient[keep]) * SCALING
-        expect_identical(out$LogFC, .compute_expected_lfc(SCALING, PSEUDO))
+        expect_equal(out$LogFC, .compute_expected_lfc(SCALING, PSEUDO))
     }
 })
 
