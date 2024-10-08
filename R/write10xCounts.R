@@ -116,7 +116,7 @@ write10xCounts <- function(path, x, barcodes=colnames(x), gene.id=rownames(x), g
     if (type=="sparse") {
         .write_sparse(temp.path, x, barcodes, gene.id, gene.symbol, gene.type, version=version)
     } else {
-        .write_hdf5(temp.path, genome, x, barcodes, gene.id, gene.symbol, gene.type, version=version)
+        .write_hdf5(temp.path, genome, x, barcodes, gene.id, gene.symbol, gene.type, version=version, library.ids=library.ids)
     }
 
     # We don't put this at the top as the write functions might fail; 
