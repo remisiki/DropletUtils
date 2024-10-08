@@ -200,7 +200,7 @@ write10xCounts <- function(path, x, barcodes=colnames(x), gene.id=rownames(x), g
         h5g <- H5Gopen(h5f, "/")
         h5writeAttribute(chemistry, h5obj=h5g, name="chemistry_description", variableLengthString=TRUE, asScalar=TRUE, encoding="UTF-8")
         h5writeAttribute("matrix", h5obj=h5g, name="filetype", variableLengthString=TRUE, asScalar=TRUE, encoding="UTF-8")
-        h5writeAttribute(library.ids, h5obj=h5g, name="library_ids", variableLengthString=TRUE, asScalar=TRUE, encoding="UTF-8")
+        h5writeAttribute(library.ids, h5obj=h5g, name="library_ids", variableLengthString=TRUE, encoding="UTF-8")
         h5writeAttribute(original.gem.groups, h5obj=h5g, name="original_gem_groups")
         h5writeAttribute(as.integer(version) - 1L, h5obj=h5g, name="version") # this is probably correct.
         H5Gclose(h5g)
